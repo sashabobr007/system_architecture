@@ -115,13 +115,13 @@ def update_user(user_id: int, updated_user: User, current_user: str = Depends(ge
     raise HTTPException(status_code=404, detail="User not found")
 
 # DELETE /users/{user_id} - Удалить пользователя по ID (требует аутентификации)
-@app.delete("/users/{user_id}", response_model=User)
-def delete_user(user_id: int, current_user: str = Depends(get_current_client)):
-    for index, user in enumerate(users_db):
-        if user.id == user_id:
-            deleted_user = users_db.pop(index)
-            return deleted_user
-    raise HTTPException(status_code=404, detail="User not found")
+# @app.delete("/users/{user_id}", response_model=User)
+# def delete_user(user_id: int, current_user: str = Depends(get_current_client)):
+#     for index, user in enumerate(users_db):
+#         if user.id == user_id:
+#             deleted_user = users_db.pop(index)
+#             return deleted_user
+#     raise HTTPException(status_code=404, detail="User not found")
 
 
 if __name__ == "__main__":

@@ -2,14 +2,14 @@ stages:
   - build
   - deploy
 
-build-service1:
+build-task-service:
   stage: build
   script:
     - docker build -t task_app hw_02/task_service/.
   only:
     - hw_02
 
-build-service2:
+build-user-service:
   stage: build
   script:
     - docker build -t user_app hw_02/user_service/.
