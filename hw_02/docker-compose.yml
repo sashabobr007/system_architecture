@@ -1,0 +1,13 @@
+services:
+
+  task_app:
+    image: task_app
+    container_name: task_app
+    ports:
+      - 8002:8002
+
+  user_app:
+    image: user_app
+    container_name: user_app
+    ports:
+      - 8001:8001

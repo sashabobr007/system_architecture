@@ -126,5 +126,5 @@ def delete_user(user_id: int, current_user: str = Depends(get_current_client)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
-    #uvicorn.run(app, host="localhost", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=8002)
+    #uvicorn.run(app, host="localhost", port=8002)

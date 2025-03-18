@@ -1,0 +1,24 @@
+stages:
+  - build
+  - deploy
+
+build-service1:
+  stage: build
+  script:
+    - docker build -t task_app task_service/.
+  only:
+    - hw_02
+
+build-service2:
+  stage: build
+  script:
+    - docker build -t user_app user_service/.
+  only:
+    - hw_02
+
+deploy-job:
+  stage: deploy
+  script:
+    - docker compose up -d
+  only:
+    - hw_02
