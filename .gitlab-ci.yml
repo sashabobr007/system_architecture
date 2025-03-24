@@ -19,7 +19,6 @@ build-user-service:
 deploy-job:
   stage: deploy
   script:
-    - docker compose down
-    - docker compose up --build -d
+    - docker compose up --build -d --remove-orphans
   only:
     - hw_02
