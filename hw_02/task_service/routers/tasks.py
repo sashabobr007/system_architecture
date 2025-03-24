@@ -19,7 +19,7 @@ async def create_task_for_goal(
     if goal_id not in fake_goals_db:
         raise GoalNotFoundException
 
-    task_id = len(fake_goals_db) + 1
+    task_id = len(fake_tasks_db) + 1
     new_task = Task(
         id=task_id,
         **task.dict(),
@@ -28,7 +28,7 @@ async def create_task_for_goal(
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
-    fake_tasks_db[task_id] = new_task
+    fake_tasks_db[str(task_id)] = new_task
     return new_task
 
 

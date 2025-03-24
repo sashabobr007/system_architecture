@@ -23,7 +23,7 @@ async def create_goal(
         owner_id=current_user,
         created_at=datetime.now()
     )
-    fake_goals_db[goal_id] = new_goal
+    fake_goals_db[str(goal_id)] = new_goal
     return new_goal
 
 # Получение всех целей пользователя

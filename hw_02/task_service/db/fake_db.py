@@ -6,7 +6,6 @@ fake_tasks_db = {}
 current_goal_id = 1
 current_task_id = 1
 
-
 # Инициализация тестовыми данными
 
 goal = Goal(
@@ -16,8 +15,7 @@ goal = Goal(
     owner_id='admin',
     created_at=datetime.now()
 )
-fake_goals_db[current_goal_id] = goal
-current_goal_id += 1
+fake_goals_db['1'] = goal
 
 task = Task(
     id=current_task_id,
@@ -29,6 +27,4 @@ task = Task(
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
-fake_tasks_db[current_task_id] = task
-current_task_id += 1
-
+fake_tasks_db['1'] = task

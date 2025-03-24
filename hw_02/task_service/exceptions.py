@@ -13,7 +13,7 @@ class UserException(HTTPException):
 
 class TaskNotFoundException(UserException):
     status_code = status.HTTP_404_NOT_FOUND
-    detail = "Goal not found"
+    detail = "Task not found"
 
 
 class GoalNotFoundException(UserException):
