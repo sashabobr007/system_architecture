@@ -11,7 +11,7 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 # Создание задачи в цели
 @router.post("/{goal_id}/tasks", response_model=Task)
 async def create_task_for_goal(
-        goal_id: int,
+        goal_id: str,
         task: TaskCreate,
         current_user=Depends(get_current_user)
 ):
@@ -23,7 +23,7 @@ async def create_task_for_goal(
     new_task = Task(
         id=task_id,
         **task.dict(),
-        goal_id=goal_id,
+        goal_id=int(goal_id),
         owner_id=current_user,
         created_at=datetime.now(),
         updated_at=datetime.now()
@@ -35,7 +35,7 @@ async def create_task_for_goal(
 # Обновление статуса задачи
 @router.put("/{task_id}", response_model=Task)
 async def update_task_status(
-        task_id: int,
+        task_id: str,
         status: TaskStatus,
         current_user=Depends(get_current_user)):
     if task_id not in fake_tasks_db:
@@ -50,7 +50,7 @@ async def update_task_status(
 # Назначение исполнителя задачи
 @router.put("/{task_id}/assign", response_model=Task)
 async def assign_task(
-    task_id: int,
+    task_id: str,
     username: str,
     current_user=Depends(get_current_user)):
     if task_id not in fake_tasks_db:
@@ -67,7 +67,7 @@ async def assign_task(
 # Удаление исполнителя из задачи
 @router.delete("/{task_id}/assign", response_model=Task)
 async def unassign_task(
-        task_id: int,
+        task_id: str,
         current_user=Depends(get_current_user)):
     if task_id not in fake_tasks_db:
         raise TaskNotFoundException
@@ -81,12 +81,11 @@ async def unassign_task(
 # Удаление задачи
 @router.delete("/{task_id}")
 async def delete_task(
-        task_id: int,
+        task_id: str,
         current_user=Depends(get_current_user)):
     if task_id not in fake_tasks_db:
         raise TaskNotFoundException
 
-    task = fake_tasks_db[task_id]
     del fake_tasks_db[task_id]
     return {"message": "Task deleted successfully"}
 

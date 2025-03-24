@@ -38,24 +38,26 @@ async def read_goals(current_user=Depends(get_current_user)):
 # Получение всех задач цели
 @router.get("/{goal_id}/tasks", response_model=List[Task])
 async def read_goal_tasks(
-        goal_id: int,
+        goal_id: str,
         current_user=Depends(get_current_user)):
     if goal_id not in fake_goals_db:
         raise GoalNotFoundException
 
+    id = int(goal_id)
     return [
         task for task in fake_tasks_db.values()
-        if task.goal_id == goal_id
+        if task.goal_id == id
     ]
 
 # Удаление цели (включая все задачи)
 @router.delete("/goals/{goal_id}")
 async def delete_goal(
-        goal_id: int,
+        goal_id: str,
         current_user=Depends(get_current_user)):
     if goal_id not in fake_goals_db:
         raise GoalNotFoundException
 
+    goal_id = int(goal_id)
     # Удаляем все связанные задачи
     task_ids = [t.id for t in fake_tasks_db.values() if t.goal_id == goal_id]
     for task_id in task_ids:
