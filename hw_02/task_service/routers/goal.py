@@ -63,5 +63,5 @@ async def delete_goal(
     for task_id in task_ids:
         del fake_tasks_db[str(task_id)]
 
-    del fake_goals_db[goal_id]
+    del fake_goals_db[str(goal_id)]
     return {"message": "Goal and all its tasks deleted successfully"}
