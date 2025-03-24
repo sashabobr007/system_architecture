@@ -61,7 +61,7 @@ async def delete_goal(
     # Удаляем все связанные задачи
     task_ids = [t.id for t in fake_tasks_db.values() if t.goal_id == goal_id]
     for task_id in task_ids:
-        del fake_tasks_db[task_id]
+        del fake_tasks_db[str(task_id)]
 
     del fake_goals_db[goal_id]
     return {"message": "Goal and all its tasks deleted successfully"}
