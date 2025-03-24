@@ -19,6 +19,7 @@ build-user-service:
 deploy-job:
   stage: deploy
   script:
+    - docker compose down
     - docker compose up --build -d
   only:
     - hw_02
