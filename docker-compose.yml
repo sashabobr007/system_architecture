@@ -6,8 +6,8 @@ services:
 #    ports:
 #      - 8002:8002
 #
-#  user_app:
-#    image: user_app
-#    container_name: user_app
-#    ports:
-#      - 8001:8001
+  user_app:
+    image: user_app
+    container_name: user_app
+    ports:
+      - 8001:8001
