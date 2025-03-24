@@ -1,11 +1,36 @@
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import datetime
-from models.task import Task, TaskStatus
-from db.fake_db import fake_tasks_db
+from models.task import Task, TaskStatus, TaskCreate
+from db.fake_db import fake_tasks_db, fake_goals_db
 from auth.dependencies import get_current_user
-from exceptions import TaskNotFoundException
+from exceptions import TaskNotFoundException, GoalNotFoundException
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
+
+
+# Создание задачи в цели
+@router.post("/{goal_id}/tasks", response_model=Task)
+async def create_task_for_goal(
+        goal_id: int,
+        task: TaskCreate,
+        current_user=Depends(get_current_user)
+):
+
+    if goal_id not in fake_goals_db:
+        raise GoalNotFoundException
+
+    task_id = len(fake_goals_db) + 1
+    new_task = Task(
+        id=task_id,
+        **task.dict(),
+        goal_id=goal_id,
+        owner_id=current_user,
+        created_at=datetime.now(),
+        updated_at=datetime.now()
+    )
+    fake_tasks_db[task_id] = new_task
+    return new_task
+
 
 # Обновление статуса задачи
 @router.put("/{task_id}", response_model=Task)
