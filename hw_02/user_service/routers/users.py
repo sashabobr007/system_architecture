@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from hw_02.user_service.auth.dependencies import get_current_user, check_owner_permissions,create_access_token
-from hw_02.user_service.models.user import *
-from hw_02.user_service.db.fake_db import fake_users_db
+from auth.dependencies import get_current_user, check_owner_permissions,create_access_token
+from models.user import *
+from db.fake_db import fake_users_db
 from passlib.context import CryptContext
 from typing import List, Optional
-from hw_02.user_service.exceptions import (UserNotEnoughPermissions, UserNotFoundException, UserAlreadyExistsException,
+from exceptions import (UserNotEnoughPermissions, UserNotFoundException, UserAlreadyExistsException,
                                            UserNameAlreadyExistsException)
 
 

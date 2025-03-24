@@ -1,4 +1,4 @@
-from hw_02.user_service.models.user import UserInDB, UserRole
+from models.user import UserInDB, UserRole
 
 fake_users_db = {
     "admin": UserInDB(

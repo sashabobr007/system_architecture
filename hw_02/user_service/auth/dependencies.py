@@ -1,12 +1,12 @@
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from hw_02.user_service.core.config import settings
+from core.config import settings
 from datetime import datetime, timedelta
 from typing import List, Optional
-from hw_02.user_service.db.fake_db import fake_users_db
-from hw_02.user_service.models.user import UserInDB, UserRole
-from hw_02.user_service.exceptions import UserNotEnoughPermissions
+from db.fake_db import fake_users_db
+from models.user import UserInDB, UserRole
+from exceptions import UserNotEnoughPermissions
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 

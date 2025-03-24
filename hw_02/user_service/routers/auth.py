@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from hw_02.user_service.auth.dependencies import create_access_token
-from hw_02.user_service.db.fake_db import fake_users_db
+from auth.dependencies import create_access_token
+from db.fake_db import fake_users_db
 from passlib.context import CryptContext
-from hw_02.user_service.exceptions import InvalidCredentialsException
+from exceptions import InvalidCredentialsException
 from datetime import datetime, timedelta
-from hw_02.user_service.core.config import settings
+from core.config import settings
 
 
 router = APIRouter(prefix="/auth", tags=["Auth/Token"])
