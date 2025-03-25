@@ -1,6 +1,6 @@
 # 1. Создайте HTTP REST API для сервисов, спроектированных в первом задании (попроектированию). Должно быть реализовано как минимум два сервиса(управления пользователем, и хотя бы один «бизнес» сервис)
 
-Созданы - user-service и task-service].
+Созданы - [user-service](https://user.sanekteam.ru/docs#/) и [task-service](https://task.sanekteam.ru/docs#/).
 
 # 2. Сервис должен поддерживать аутентификацию с использованием JWT-token (Bearer)
 
@@ -24,9 +24,16 @@ https://user.sanekteam.ru/auth/token
 
 # 7. Сделайте OpenAPI спецификацию и сохраните ее в корне проекта
 
+[openapi_task.json](task_service/openapi_task.json)
 
+[openapi_user.json](user_service/openapi_user.json)
 
 # 8. Актуализируйте модель архитектуры в Structurizr DSL
+
+Актуализированы технологии (Java -> Python FastAPI)
+
+[workspace.dsl](../hw_01/workspace.dsl)
+
 # 9. Ваши сервисы должны запускаться через docker-compose коммандой docker-compose up (создайте Docker файлы для каждого сервиса)
 
 [Dockerfile](user_service/Dockerfile)

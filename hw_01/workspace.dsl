@@ -22,19 +22,19 @@ workspace {
             }
         
             userService = container "User Service" {
-                technology "Java Spring"
+                technology "Python FastAPI"
                 description "Обработка данных о пользователях"
                 -> db "Сохранение и получение информации о пользователях" "JDBC"
             }   
 
             taskService = container "Task Service" {
-                technology "Java Spring"
+                technology "Python FastAPI"
                 description "Управление задачами и целями"
                 -> db "Сохранение и получение информации о задачах и целях" "JDBC"
             }
 
             api = container "API Gateway" {
-                technology "Java Spring Cloud Gateway"
+                technology "Nginx"
                 -> userService "Создание/поиск пользователей" "HTTPS"
                 -> taskService "Создание/поиск/удаление задач и целей" "HTTPS"
                 -> notification_system "Отправить уведомление" "HTTPS"
