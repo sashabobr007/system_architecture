@@ -11,9 +11,6 @@ build-task-service:
 
 build-user-service:
   stage: build
-  before_script:
-    - rm -f .env
-    - cp $ENV .env
   script:
     - docker build -t user_app hw_03/user_service/.
   only:

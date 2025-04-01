@@ -7,9 +7,9 @@ services:
       - .env
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: $2b$12$7u
+      POSTGRES_DB: app_db
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
       - postgresdata_dev:/var/lib/postgresql/data
