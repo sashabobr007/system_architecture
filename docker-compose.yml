@@ -1,5 +1,21 @@
 services:
 
+  db:
+    image: postgres:15
+    container_name: task_db
+    env_file:
+      - .env
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - postgresdata_dev:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
   task_app:
     image: task_app
     container_name: task_app
@@ -11,3 +27,7 @@ services:
     container_name: user_app
     ports:
       - 8001:8001
+
+
+volumes:
+  postgresdata_dev:
