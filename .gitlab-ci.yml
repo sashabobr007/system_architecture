@@ -5,14 +5,14 @@ stages:
 build-task-service:
   stage: build
   script:
-    - docker build -t task_app hw_03/task_service/.
+    - docker build -t task_app hw_04/task_service/.
   only:
     - main
 
 build-user-service:
   stage: build
   script:
-    - docker build -t user_app hw_03/user_service/.
+    - docker build -t user_app hw_04/user_service/.
   only:
     - main
 

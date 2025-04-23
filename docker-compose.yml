@@ -1,5 +1,16 @@
 services:
 
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    restart: on-failure
+    volumes:
+      - mongodbdata:/data/db
+    ports:
+      - '27017:27017'
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+
   db:
     image: postgres:15
     container_name: task_db
@@ -9,6 +20,11 @@ services:
       POSTGRES_PASSWORD: $2b$12$7u
       POSTGRES_DB: app_db
       PGDATA: "/var/lib/postgresql/data/pgdata"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgresdata_dev:/var/lib/postgresql/data
     ports:
@@ -23,9 +39,13 @@ services:
   user_app:
     image: user_app
     container_name: user_app
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - 8001:8001
 
 
 volumes:
   postgresdata_dev:
+  mongodbdata:
