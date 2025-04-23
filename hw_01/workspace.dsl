@@ -16,21 +16,26 @@ workspace {
 
             -> notification_system "Отправка уведомлений" "HTTPS"
 
-            db = container "Database" {
+            db = container "Database PostgreSQL" {
                 technology "PostgreSQL 15"
+                tags "Database"
+            }
+
+            mongo = container "Database Mongo" {
+                technology "MongoDB 5.0"
                 tags "Database"
             }
         
             userService = container "User Service" {
                 technology "Python FastAPI"
                 description "Обработка данных о пользователях"
-                -> db "Сохранение и получение информации о пользователях" "JDBC"
+                -> db "Сохранение и получение информации о пользователях" "PostgreSQL Driver"
             }   
 
             taskService = container "Task Service" {
                 technology "Python FastAPI"
                 description "Управление задачами и целями"
-                -> db "Сохранение и получение информации о задачах и целях" "JDBC"
+                -> mongo "Сохранение и получение информации о задачах и целях" "MongoDB Driver"
             }
 
             api = container "API Gateway" {
@@ -45,7 +50,6 @@ workspace {
                 technology "JS, React"
                 -> api "Добавление/просмотр/удаление цели/задачи/пользователя" "HTTPS"
             }
-
             
         }
 
@@ -75,12 +79,12 @@ workspace {
             user -> task_system.wa "Создать новую задачу на пути к цели"
             task_system.wa -> task_system.api "POST /goals/{goalId}/tasks"
             task_system.api -> task_system.taskService "POST /goals/{goalId}/tasks"
-            task_system.taskService -> task_system.db "INSERT INTO tasks (title, description, goalId, ...) VALUES ({title}, {description}, {goalId}, {...})"
+            task_system.taskService -> task_system.mongo "tasks_collection.insert_one(task_data)"
             
             user -> task_system.wa "Получить список задач цели"
             task_system.wa -> task_system.api "GET /goals/{goalId}/tasks"
             task_system.api -> task_system.taskService "GET /goals/{goalId}/tasks" 
-            task_system.taskService -> task_system.db "SELECT * FROM goals WHERE userId={userId} and goalId={goalId}"
+            task_system.taskService -> task_system.mongo "tasks_collection.find({'goal_id': goal_id})"
         }
 
         styles {

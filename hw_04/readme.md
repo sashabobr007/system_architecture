@@ -10,6 +10,8 @@ docker build -t task_app hw_04/task_service/.
 docker build -t user_app hw_04/user_service/.
 docker-compose up --build -d
 ```
+## Актуализирована модель архитектуры в Structurizr DSL -> добавлена MongoDB как БД для task_service
+[workspace.dsl](../hw_01/workspace.dsl)
 
 ### Добавлена проверка на запуск user_service
 
