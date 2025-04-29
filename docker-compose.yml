@@ -1,5 +1,18 @@
 services:
 
+  redis:
+    image: redis
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 30s
+      retries: 3
+
   mongo:
     image: mongo:5.0
     container_name: mongo
@@ -42,6 +55,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
       - 8001:8001
 
@@ -49,3 +64,4 @@ services:
 volumes:
   postgresdata_dev:
   mongodbdata:
+  redis_data:

@@ -21,6 +21,7 @@ class UserUpdate(BaseModel):
     last_name: str | None
     email: str | None
 
+
 class UserInDB(UserBase):
-   # id: int
+    #id: int
     hashed_password: str

@@ -8,10 +8,10 @@ from generate_db_data import generate_users
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    await delete_tables()
-    await create_tables()
+    #await delete_tables()
+    #await create_tables()
     # Генерация пользователей
-    await generate_users(10)
+    #await generate_users(10)
     yield
 
 app = FastAPI(lifespan=lifespan, title="User Service", version="1.0.0")

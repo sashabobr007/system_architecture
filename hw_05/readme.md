@@ -15,3 +15,10 @@ docker-compose up --build -d
 
 ## Замер производительности
 
+| Количество потоков | Avg Latency, ms | Total requests|Requests/sec| Avg Latency Redis, ms | Total requests Redis|Requests/sec Redis|
+|--------------------|-----------------|------|------|-----------------------|------|------|
+| 1                  |40.07|10741|536.74|
+| 3                  |41.52|9586|478.99|
+| 5                  |38.53|11103|554.75|
+
+_P.S Замер производился на ВМ с 2 ядрами CPU и 2 GB RAM_
