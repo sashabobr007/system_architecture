@@ -21,6 +21,12 @@ workspace {
                 tags "Database"
             }
 
+            redis = container "Redis Cache" {
+                technology "Redis 7.0"
+                tags "Cache"
+                description "Кеш для данных пользователей"
+            }
+
             mongo = container "Database Mongo" {
                 technology "MongoDB 5.0"
                 tags "Database"
@@ -30,6 +36,7 @@ workspace {
                 technology "Python FastAPI"
                 description "Обработка данных о пользователях"
                 -> db "Сохранение и получение информации о пользователях" "PostgreSQL Driver"
+                -> redis "Кеширование данных пользователей" "Redis Client"
             }   
 
             taskService = container "Task Service" {
@@ -107,6 +114,9 @@ workspace {
             }
             element "Database" {
                 shape cylinder
+            }
+            element "Cache" {
+                shape pipe
             }
         }
     }
