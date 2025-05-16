@@ -1,5 +1,65 @@
 services:
 
+  kafka1:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka1
+    ports:
+      #   - "2181:2181"
+      - "9092:9092"
+    #   - "9093:9093"
+    environment:
+      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_CFG_PROCESS_ROLES: "broker,controller"
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://kafka1:9092"
+      KAFKA_BROKER_ID: 1
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "1@kafka1:9093,2@kafka2:9093"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_KRAFT_CLUSTER_ID: "dh6khitPSDGZSBOjNeTC_g"
+    volumes:
+      - kafka_volume1:/bitnami/kafka
+    networks:
+      - my_network
+
+  kafka2:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka2
+    # ports:
+    #   - "2181:2181"
+    #   - "9092:9092"
+    #   - "9093:9093"
+    environment:
+      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_CFG_PROCESS_ROLES: "broker,controller"
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://kafka2:9092"
+      KAFKA_BROKER_ID: 2
+      KAFKA_CFG_NODE_ID: 2
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "1@kafka1:9093,2@kafka2:9093"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_KRAFT_CLUSTER_ID: "dh6khitPSDGZSBOjNeTC_g"
+    volumes:
+      - kafka_volume2:/bitnami/kafka
+    networks:
+      - my_network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.4.0
+    ports:
+      - "8888:8080"
+    environment:
+      KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS: "kafka1:9092,kafka2:9092"
+      KAFKA_CLUSTERS_0_NAME: "kraft"
+    networks:
+      - my_network
+
   redis:
     image: redis
     container_name: redis_cache
@@ -12,6 +72,8 @@ services:
       interval: 5s
       timeout: 30s
       retries: 3
+    networks:
+      - my_network
 
   mongo:
     image: mongo:5.0
@@ -23,6 +85,8 @@ services:
       - '27017:27017'
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+    networks:
+      - my_network
 
   db:
     image: postgres:15
@@ -42,12 +106,16 @@ services:
       - postgresdata_dev:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      - my_network
 
   task_app:
     image: task_app
     container_name: task_app
     ports:
       - 8002:8002
+    networks:
+      - my_network
 
   user_app:
     image: user_app
@@ -59,9 +127,25 @@ services:
         condition: service_healthy
     ports:
       - 8001:8001
+    networks:
+      - my_network
 
+  kafka_konsumer:
+    image: consumer
+    container_name: consumer
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - my_network
 
+networks:
+  my_network:
 volumes:
   postgresdata_dev:
   mongodbdata:
   redis_data:
+  kafka_volume1:
+  kafka_volume2:
