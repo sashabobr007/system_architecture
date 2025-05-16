@@ -16,10 +16,26 @@ workspace {
 
             -> notification_system "Отправка уведомлений" "HTTPS"
 
+            
             db = container "Database PostgreSQL" {
                 technology "PostgreSQL 15"
                 tags "Database"
             }
+
+            consumerUserService = container "Consumer User Service" {
+                technology "Python FastAPI"
+                description "Consumer (сохраняет данные о пользователях)"
+                -> db "Сохранение информации о пользователях" "HTTPS"
+            }   
+
+
+            kafka = container "Apache Kafka" {
+                    technology "Kafka 3.5"
+                    tags "MessageBroker"
+                    description "Брокер событий для обработки добавления пользователей"
+                    -> consumerUserService "Отправка данных пользователя" "Kafka Consumer API"
+                }
+
 
             redis = container "Redis Cache" {
                 technology "Redis 7.0"
@@ -35,10 +51,12 @@ workspace {
             userService = container "User Service" {
                 technology "Python FastAPI"
                 description "Обработка данных о пользователях"
-                -> db "Сохранение и получение информации о пользователях" "PostgreSQL Driver"
+                -> kafka "Сохранение информации о пользователях" "Kafka Producer API"
+                -> db "Сохранение и получение информации о пользователях" "HTTPS"
                 -> redis "Кеширование данных пользователей" "Redis Client"
             }   
 
+            
             taskService = container "Task Service" {
                 technology "Python FastAPI"
                 description "Управление задачами и целями"
@@ -57,6 +75,7 @@ workspace {
                 technology "JS, React"
                 -> api "Добавление/просмотр/удаление цели/задачи/пользователя" "HTTPS"
             }
+            
             
         }
 
@@ -116,6 +135,9 @@ workspace {
                 shape cylinder
             }
             element "Cache" {
+                shape pipe
+            }
+            element "MessageBroker" {
                 shape pipe
             }
         }
